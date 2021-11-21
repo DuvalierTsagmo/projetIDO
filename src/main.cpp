@@ -19,7 +19,7 @@
 const int ANALOG_PIN = A1; // Utilisation de la broche A1 pour lecture analogue
 const int LED_BLEU = 3;
 const int LED_ROUGE = 2;
-int AnalogValue = 0;       // Variable pour contenir la valeur lue de la broche analogue
+int AnalogValue = 0; // Variable pour contenir la valeur lue de la broche analogue
 
 /*
   Variables pour obtenir une valeur de tension a partir du résultat du convertisseur
@@ -55,11 +55,9 @@ void setup()
   MQTTConnect(); //Branchement au broker MQTT
 
   pinMode(ANALOG_PIN, INPUT); // Pour une bonne lecture, la broche analogique doit être placé en mode entré explicitment
-  
+
   pinMode(LED_BLEU, OUTPUT);
   pinMode(LED_ROUGE, OUTPUT);
-  
-
 }
 
 // Boucle infinie qui permet au uC de faire une ou plusieurs taches sans arrêt
@@ -90,17 +88,22 @@ void loop()
 
   if (TMP36Temperature >= 25)
   {
-    digitalWrite(LED_ROUGE, HIGH);
-    digitalWrite(LED_BLEU, LOW);
-  }
-
-
-   if (TMP36Temperature <= 21 )
-  {
+    // C'est ici que on va allumer la climatisation et eteindre le chauffage
     digitalWrite(LED_ROUGE, LOW);
     digitalWrite(LED_BLEU, HIGH);
   }
-  
+  else if (TMP36Temperature <= 21)
+  {
+    // c'est ici que on va allumer le chauffage et eteindre la climatisation
+    digitalWrite(LED_ROUGE, HIGH);
+    digitalWrite(LED_BLEU, LOW);
+  }
+  else
+  {
+    // c'est ici que on va eteindre le chauffage et eteindre la climatisation
+    digitalWrite(LED_ROUGE, LOW);
+    digitalWrite(LED_BLEU, LOW);
+  }
 
   // Impression dans le moniteur série
 
