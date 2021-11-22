@@ -3,8 +3,8 @@ SSID du WIFI ainsi que le mot de passe
 Modifier les paramètre WIFI pour le réseau auquels votre objets doit se brancher
 */
 
-#define WIFI_SECRET_SSID "Daydream"
-#define WIFI_SECRET_PASS "gymnastics"
+#define WIFI_SECRET_SSID "NETGEAR9DECDF-SETUP"
+#define WIFI_SECRET_PASS "sharedsecret"
 
 /*
 Information nécessaire pour le branchement a un Broker MQTT

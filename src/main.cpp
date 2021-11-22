@@ -44,6 +44,11 @@ int MvParDegreeCelcius = 10;        // Nombre de mV par degré Celcius
 
 const int MS_DELAI = 1000; // Nombre de milliseconde de délais
 
+// Declaration des variables pour le statut du chauffage et de la climatisation
+
+bool StatusChauffage = false;
+bool StatusClimatisation = false;
+
 // La fonction setup sert, entre autre chose, a configurer les broches du uC
 
 void setup()
@@ -89,18 +94,24 @@ void loop()
   if (TMP36Temperature >= 25)
   {
     // C'est ici que on va allumer la climatisation et eteindre le chauffage
+    StatusChauffage = false;
+    StatusClimatisation = true;
     digitalWrite(LED_ROUGE, LOW);
     digitalWrite(LED_BLEU, HIGH);
   }
   else if (TMP36Temperature <= 21)
   {
     // c'est ici que on va allumer le chauffage et eteindre la climatisation
+    StatusChauffage = true;
+    StatusClimatisation = false;
     digitalWrite(LED_ROUGE, HIGH);
     digitalWrite(LED_BLEU, LOW);
   }
   else
   {
     // c'est ici que on va eteindre le chauffage et eteindre la climatisation
+    StatusChauffage = false;
+    StatusClimatisation = false;
     digitalWrite(LED_ROUGE, LOW);
     digitalWrite(LED_BLEU, LOW);
   }
@@ -117,7 +128,8 @@ void loop()
   Serial.print("La valeur de température est alors  ");
   Serial.print(TMP36Temperature);
   Serial.println(" degré Celcius");
-
+  appendPayload("StatutChauffage", StatusChauffage);
+  appendPayload("StatutClimatisation", StatusClimatisation);
   appendPayload("Temperature", TMP36Temperature); //Ajout de la donnée température au message MQTT
   sendPayload();                                  //Envoie du message via le protocole MQTT
 
